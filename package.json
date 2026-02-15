@@ -3,9 +3,19 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-  "main": "src/lib/smartpay-sdk/index.js",
+  "main": "src/smartpapay/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/smartpapay/index.js",
+      "default": "./src/smartpapay/index.js"
+    }
+  },
+  "files": [
+    "src/smartpapay",
+    "README.md"
+  ],
   "scripts": {
-    "lint": "node --check src/lib/smartpay-sdk/*.js src/lib/smartpay-sdk/adapters/*.js src/lib/smartpay-sdk/internal/*.js",
+    "lint": "node --check src/smartpapay/*.js src/smartpapay/adapters/*.js src/smartpapay/internal/*.js",
     "test": "node -e \"console.log('No test suite configured for this SDK yet.')\"",
     "prepare": "node -e \"console.log('SDK project ready')\""
   },

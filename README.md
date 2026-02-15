@@ -149,7 +149,7 @@ import {
   smartPaySDK,
   hotSmartPaySDK,
   createDemoWallet,
-} from './src/lib/smartpay-sdk';
+} from './src/smartpapay';
 
 const checkout = {
   id: 'invoice-001',
@@ -203,7 +203,7 @@ npm run lint
 That currently validates the SDK source files directly with Node syntax checks:
 
 ```bash
-node --check src/lib/smartpay-sdk/*.js src/lib/smartpay-sdk/adapters/*.js src/lib/smartpay-sdk/internal/*.js
+node --check src/smartpapay/*.js src/smartpapay/adapters/*.js src/smartpapay/internal/*.js
 ```
 
 ---
