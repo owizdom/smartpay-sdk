@@ -1,20 +1,18 @@
 # SmartPay SDK: My Journey
 
-I started this project with a very practical goal: make crypto checkout feel as easy as a normal checkout flow.  
-I wanted to build something that let people pay with crypto without reading a whitepaper, without hunting for settings, and without wondering if the payment route was even worth using.
+I started this project with a very practical goal: make crypto checkout feel as seamless as any normal checkout flow. I wanted to create something that let people pay with crypto without reading a whitepaper, hunting through settings, or wondering whether the payment route was even worth it.
 
-At first, I went the usual way for a hackathon: I built a Next.js app, put in pages for welcome, register, dashboard, and customer checkout. I wired a wallet button, built route summaries, and added a few status badges so users could follow payment state end to end.  
-It looked good. It worked enough for a demo. I had cards, toggles, and some visual flow. But after a few iterations, a hard truth showed up: the real value was never the UI.
+At first, I took the usual hackathon approach: I built a (Next.js app)[https://github.com/owizdom/near-checkout-hackathon-SCRAPPED] with pages for welcome, registration, dashboard, and customer checkout. I wired in a wallet button, built route summaries, and added status badges so users could follow the payment process end to end. I even designed cards, toggles, and a visual flow to make the experience feel polished. For a demo, it looked good and worked well enough.
 
-The UI could change every week.  
-The logic underneath had to be stable.
+But after a few iterations, a hard truth became clear: the real value wasn’t in the UI.
 
-That realization changed the entire direction.
+The interface could change every week. The logic underneath had to be stable, reliable, and reusable.
 
-I shifted from “building screens” to building a **reusable payment engine**.  
-If this logic was the real moat, it should not be trapped in one app. It should be a package. It should be embeddable. It should be reusable from any frontend or backend environment.
+That realization completely changed the direction of the project.
 
-So I pivoted hard: from a checkout UI hackathon demo to a pure SDK project.
+I shifted my focus from “building screens” to building a reusable payment engine. If the core logic was the real moat, it shouldn’t be locked into a single app. It should be a package. It should be embeddable. It should work from any frontend or backend environment.
+
+So I pivoted hard: what started as a hackathon UI demo became a pure SDK-first project—clean, modular, and designed to power crypto payments anywhere.
 
 ---
 
