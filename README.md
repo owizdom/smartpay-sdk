@@ -102,6 +102,8 @@ No business logic lives there. It supports the engine without exposing complexit
 
 ## What this SDK does now
 
+<img width="6919" height="1459" alt="image" src="https://github.com/user-attachments/assets/b9e87fe4-ca29-46a2-a6f8-3d0d9fcc7f12" />
+
 In practice, the SDK supports the following flow:
 
 1. A host app builds a checkout request (product, amount, settlement asset, accepted methods).
