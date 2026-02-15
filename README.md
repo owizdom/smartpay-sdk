@@ -2,7 +2,7 @@
 
 I started this project with a very practical goal: make crypto checkout feel as seamless as any normal checkout flow. I wanted to create something that let people pay with crypto without reading a whitepaper, hunting through settings, or wondering whether the payment route was even worth it.
 
-At first, I took the usual hackathon approach: I built a (Next.js app)[https://github.com/owizdom/near-checkout-hackathon-SCRAPPED] with pages for welcome, registration, dashboard, and customer checkout. I wired in a wallet button, built route summaries, and added status badges so users could follow the payment process end to end. I even designed cards, toggles, and a visual flow to make the experience feel polished. For a demo, it looked good and worked well enough.
+At first, I took the usual hackathon approach: I built a [Next.js app](https://github.com/owizdom/near-checkout-hackathon-SCRAPPED) with pages for welcome, registration, dashboard, and customer checkout. I wired in a wallet button, built route summaries, and added status badges so users could follow the payment process end to end. I even designed cards, toggles, and a visual flow to make the experience feel polished. For a demo, it looked good and worked well enough.
 
 But after a few iterations, a hard truth became clear: the real value wasn’t in the UI.
 
