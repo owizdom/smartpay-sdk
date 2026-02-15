@@ -1,25 +1,26 @@
 # SmartPay SDK: NEARCON Innovation Sandbox
 
-I started this project with a very practical goal: make crypto checkout feel as seamless as any normal checkout flow. I wanted to create something that let people pay with crypto without reading a whitepaper, hunting through settings, or wondering whether the payment route was even worth it.
+I started this project with a very practical goal: make crypto checkout feel as seamless as any normal checkout flow. I wanted people to pay with crypto without reading a whitepaper, hunting through settings, or wondering if the payment route was even worth it.
 
-This implementation is built specifically for the **HOT Pay (NEARCON track)** requirements. Before coding, I reviewed:
+At first, I went the usual hackathon route. I built a [Next.js app](https://github.com/owizdom/near-checkout-hackathon-SCRAPPED) with pages for welcome, registration, dashboard, and customer checkout. I wired in a wallet button, added route summaries, and included status badges so users could track their payment end to end. I even built cards, toggles, and a polished visual flow.
 
-- HOT Pay docs and public architecture notes
+It worked enough for a demo, but after a few iterations, I hit a wall. Building the UI alone felt stressful and fragile. Every tweak to the interface caused small changes in behavior, and the more I added, the more complex and brittle it became. I realized that the challenge wasn’t the UI—it was the underlying payment logic.
+
+So I paused. I stepped back and analyzed the problem carefully. Before writing another line of code, I studied:
+
+- HOT Pay documentation and public architecture notes
+
 - HOT Kit/`omni-sdk` route and adapter patterns
-- HOT validation SDK behavior and payload expectations
-- the HOT-related public repositories in the track ecosystem
 
-At first, I took the usual hackathon approach: I built a [Next.js app](https://github.com/owizdom/near-checkout-hackathon-SCRAPPED) with pages for welcome, registration, dashboard, and customer checkout. I wired in a wallet button, built route summaries, and added status badges so users could follow the payment process end to end. I even designed cards, toggles, and a visual flow to make the experience feel polished. For a demo, it looked good and worked well enough.
+- HOT validation SDK behavior and expected payloads
 
-But after a few iterations, a hard truth became clear: the real value wasn’t in the UI.
+- The public repositories in the HOT track ecosystem
 
-The interface could change every week. The logic underneath had to be stable, reliable, and reusable.
+The more I studied, the clearer it became: the core value lay in the engine, not the screens. The interface could always change, but the logic underneath had to be stable, reliable, and reusable.
 
-That realization completely changed the direction of the project.
+That realization changed everything. I shifted my focus from “building pages” to building a reusable payment engine. If the logic was the real moat, it shouldn’t be trapped inside a single hackathon app. It should be a standalone package, embeddable in any frontend or backend environment.
 
-I shifted my focus from “building screens” to building a reusable payment engine. If the core logic was the real moat, it shouldn’t be locked into a single app. It should be a package. It should be embeddable. It should work from any frontend or backend environment.
-
-So I pivoted hard: what started as a hackathon UI demo became a pure SDK-first project—clean, modular, and designed to power crypto payments anywhere.
+So I pivoted hard. What started as a hackathon UI demo became a pure SDK-first project—clean, modular, and designed to power crypto payments anywhere, with a focus on route generation, validation, and execution rather than visual polish.
 
 ### HOT Pay track analysis snapshot
 
