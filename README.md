@@ -257,6 +257,42 @@ npm test
 npm publish --access public
 ```
 
+## Run the SDK demo
+
+Use the built-in demo script to show:
+
+- multi-strategy quoting (`fastest`, `cheapest`, `balanced`)
+- transport abstraction execution path
+- deterministic simulation behavior
+- validation failure handling
+
+```bash
+npm run demo
+```
+
+The script is located at:
+- `examples/demo.mjs`
+
+## Foundry simulation test (optional)
+
+You can run the SDK against a local Foundry chain for execution-style validation.
+
+Use this flow:
+
+```bash
+anvil --port 8545 --chain-id 31337 > /tmp/anvil.log 2>&1 &
+node examples/foundry-demo.mjs
+pkill anvil
+```
+
+What this shows:
+
+- SmartPay can request route quotes and execute via the transport abstraction
+- `executeRoute` works with an EVM JSON-RPC provider (`eth_sendTransaction` path)
+- The flow is reproducible for local integration testing before mainnet usage
+
+If `pkill anvil` fails in your environment, just close the terminal where `anvil` is running.
+
 ## Developer docs polish checklist
 
 - Abstract wallet + transport layer: documented in this README and enforced in runtime.
