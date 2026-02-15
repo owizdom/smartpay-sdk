@@ -2,6 +2,13 @@
 
 I started this project with a very practical goal: make crypto checkout feel as seamless as any normal checkout flow. I wanted to create something that let people pay with crypto without reading a whitepaper, hunting through settings, or wondering whether the payment route was even worth it.
 
+This implementation is built specifically for the **HOT Pay (NEARCON track)** requirements. Before coding, I reviewed:
+
+- HOT Pay docs and public architecture notes
+- HOT Kit/`omni-sdk` route and adapter patterns
+- HOT validation SDK behavior and payload expectations
+- the HOT-related public repositories in the track ecosystem
+
 At first, I took the usual hackathon approach: I built a [Next.js app](https://github.com/owizdom/near-checkout-hackathon-SCRAPPED) with pages for welcome, registration, dashboard, and customer checkout. I wired in a wallet button, built route summaries, and added status badges so users could follow the payment process end to end. I even designed cards, toggles, and a visual flow to make the experience feel polished. For a demo, it looked good and worked well enough.
 
 But after a few iterations, a hard truth became clear: the real value wasn’t in the UI.
@@ -13,6 +20,28 @@ That realization completely changed the direction of the project.
 I shifted my focus from “building screens” to building a reusable payment engine. If the core logic was the real moat, it shouldn’t be locked into a single app. It should be a package. It should be embeddable. It should work from any frontend or backend environment.
 
 So I pivoted hard: what started as a hackathon UI demo became a pure SDK-first project—clean, modular, and designed to power crypto payments anywhere.
+
+### HOT Pay track analysis snapshot
+
+To align with the sponsor track, I mapped features across the available HOT ecosystem tooling before finalizing this architecture:
+
+- **HOT Validation intent** → hardened the local validation surface (`validateWithHotValidation`) so route payloads and wallet inputs are rejected early with deterministic errors.
+- **HOT Kit intent** → extracted route generation/ranking (`routeEngine`, `omniRouterAdapter`) so host apps can decide which chain token path is used and how to rank outcomes.
+- **HOT Pay goal** → simplified execution into a transport-agnostic interface, making the SDK usable in multiple host app stacks while keeping the same route/route-selection behavior.
+
+That analysis led to a clear architectural decision: keep checkout UX out of this repo and ship a reusable core engine that can be embedded by any app participating in the HOT Pay track.
+
+### How this helps the HOT Pay track team
+
+This SDK was built to reduce integration risk for HOT Pay participants:
+
+- it gives a reusable route engine instead of a one-off checkout screen,
+- it supports the HOT-style abstraction model (routing + validation + wallet execution) without forcing a specific UI stack,
+- it is wallet-agnostic, so existing HOT Pay frontend patterns can remain, while the routing/execution core is swapped in,
+- it gives deterministic simulation and validation hooks for testing environments, which helps teams de-risk onboarding before mainnet testing,
+- and it is easy to embed into other products because transport and provider behavior are pluggable.
+
+In short: this is built as a reusable payments engine for the ecosystem, not a presentation layer.
 
 ---
 
