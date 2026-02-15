@@ -13,8 +13,14 @@ const STRATEGY_LABELS = {
   balanced: { badge: 'Balanced', title: 'Balanced' },
 };
 
-export function buildRouteContext({ checkout, wallet, strategy = 'balanced', amountUsd }) {
-  const { tokens } = resolveTokenCatalog();
+export function buildRouteContext({
+  checkout,
+  wallet,
+  strategy = 'balanced',
+  amountUsd,
+  networks,
+}) {
+  const { tokens, networks: networkCatalog } = resolveTokenCatalog(networks);
   const accepted = Array.isArray(checkout?.acceptedPaymentMethods)
     ? checkout.acceptedPaymentMethods
     : SUPPORTED_METHODS.slice();
@@ -30,25 +36,34 @@ export function buildRouteContext({ checkout, wallet, strategy = 'balanced', amo
       ...wallet,
       balances: wallet?.balances || [],
       tokenCatalog: tokens,
+      networkCatalog,
     },
     acceptedPaymentMethods: accepted.map((item) => String(item || '').toUpperCase()),
     strategy,
   };
 }
 
-export function createDemoRoutes({ invoiceUsd, settlementTokenSymbol, wallet, preference = 'balanced', acceptedPaymentMethods = [] }) {
+export function createDemoRoutes({
+  invoiceUsd,
+  settlementTokenSymbol,
+  wallet,
+  preference = 'balanced',
+  acceptedPaymentMethods = [],
+  networks,
+}) {
   const context = buildRouteContext({
     checkout: { settlementAsset: settlementTokenSymbol, acceptedPaymentMethods },
     wallet,
     strategy: preference,
     amountUsd: invoiceUsd,
+    networks,
   });
 
   if (!context.wallet || !wallet?.balances?.length) {
     return [];
   }
 
-  const candidates = buildOmniRouteCandidates(context);
+  const candidates = buildOmniRouteCandidates({ ...context, networks: context.wallet?.networkCatalog || networks || undefined });
   const ranked = rankCandidates(candidates, preference);
   return ranked.slice(0, 6).map((route, idx) => ({
     ...route,
@@ -78,7 +93,13 @@ function pickBestCandidate(routes) {
   }, null);
 }
 
-export function quoteCheckoutRoutes({ checkout, wallet, amountInput = null, strategy = 'balanced' }) {
+export function quoteCheckoutRoutes({
+  checkout,
+  wallet,
+  amountInput = null,
+  strategy = 'balanced',
+  networks,
+}) {
   const baseAmount = checkout.priceMode === 'variable' ? amountInput || checkout.variableMin || 0 : checkout.fixedAmount || 0;
   const normalizedAmount = ensureWithinRange(
     baseAmount,
@@ -92,11 +113,17 @@ export function quoteCheckoutRoutes({ checkout, wallet, amountInput = null, stra
     checkout,
     wallet,
     amountUsd: normalizedAmount,
+    networks,
   };
   const commonContext = buildRouteContext(commonInput);
 
   strategies.forEach((current) => {
-    const candidates = buildOmniRouteCandidates({ ...commonContext, preference: current, strategy: current });
+    const candidates = buildOmniRouteCandidates({
+      ...commonContext,
+      preference: current,
+      strategy: current,
+      networks,
+    });
     const ranked = rankCandidates(candidates, current);
 
     routesByStrategy[current] = ranked.map((route) =>

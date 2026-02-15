@@ -9,21 +9,32 @@ export class HotSmartPaySDK {
     this.validationAdapter = validationAdapter;
   }
 
-  async quote(checkout, wallet, { amountInput = null, strategy = DEFAULT_STRATEGY } = {}) {
+  async quote(
+    checkout,
+    wallet,
+    {
+      amountInput = null,
+      strategy = DEFAULT_STRATEGY,
+      networks,
+      ...quoteOptions
+    } = {},
+  ) {
     return quoteCheckoutRoutes({
       checkout,
       wallet,
       amountInput,
       strategy,
+      networks,
+      ...(quoteOptions || {}),
     });
   }
 
-  async quoteByStrategy(checkout, wallet, strategy = DEFAULT_STRATEGY) {
-    const result = await this.quote(checkout, wallet, { strategy });
+  async quoteByStrategy(checkout, wallet, strategy = DEFAULT_STRATEGY, options = {}) {
+    const result = await this.quote(checkout, wallet, { strategy, ...options });
     return result.byStrategy?.[strategy] || [];
   }
 
-  async execute({ route, wallet }) {
+  async execute({ route, wallet, ...executionOptions }) {
     const validation = await this.validationAdapter({
       id: route?.id,
       amountUsd: route?.sourceAmount,
@@ -40,7 +51,7 @@ export class HotSmartPaySDK {
       };
     }
 
-    return executeRoute(route, { wallet });
+    return executeRoute(route, { wallet, ...executionOptions });
   }
 }
 

@@ -80,18 +80,57 @@ export const defaultDemoWalletBalances = [
   },
 ];
 
-export function createDemoWallet() {
+export function createDemoWallet({
+  address = '0xDeMoWa11eT0000000000000000000000000001',
+  provider = null,
+  transports = {},
+  network = NETWORKS.ethereum,
+} = {}) {
   return {
     id: 'demo',
     connectorLabel: 'Demo Wallet',
-    chain: NETWORKS.ethereum.label.toLowerCase(),
-    chainId: NETWORKS.ethereum.rpcChainId,
-    address: '0xDeMoWa11eT0000000000000000000000000001',
+    chain: network?.label ? network.label.toLowerCase() : NETWORKS.ethereum.label.toLowerCase(),
+    chainId: network?.rpcChainId || NETWORKS.ethereum.rpcChainId,
+    address,
     balances: defaultDemoWalletBalances.map((balance) => ({ ...balance })),
-    network: NETWORKS.ethereum,
-    provider: null,
+    network,
+    provider,
+    transports,
     isDemo: true,
   };
+}
+
+export function createWalletContext(overrides = {}) {
+  const {
+    provider = null,
+    transports = {},
+    chain = NETWORKS.ethereum.label.toLowerCase(),
+    chainId = NETWORKS.ethereum.rpcChainId,
+  } = overrides;
+
+  return {
+    chain,
+    chainId,
+    address: overrides.address,
+    provider,
+    transports,
+    ...overrides,
+  };
+}
+
+export function normalizeNetworkMap(networks = NETWORKS) {
+  return {
+    ...(NETWORKS),
+    ...networks,
+  };
+}
+
+export function resolveChainForToken(token = {}, networks = NETWORKS) {
+  if (!token?.chain) {
+    return null;
+  }
+
+  return networks?.[token.chain] || networks?.[token.chain.toLowerCase()] || networks?.ethereum || null;
 }
 
 export function shortAddress(address = '') {
@@ -124,11 +163,12 @@ export function routePriorityHint(route) {
   return 'Fallback route';
 }
 
-export function resolveTokenCatalog() {
+export function resolveTokenCatalog(networks = NETWORKS) {
+  const normalizedNetworks = normalizeNetworkMap(networks);
   return {
     tokens: Object.values(TOKENS),
     mapBySymbol: Object.fromEntries(Object.values(TOKENS).map((token) => [token.symbol, token])),
-    networks: NETWORKS,
+    networks: normalizedNetworks,
   };
 }
 

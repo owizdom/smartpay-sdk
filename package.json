@@ -1,23 +1,47 @@
 {
   "name": "smartpay-sdk",
-  "private": true,
-  "version": "0.0.1",
+  "private": false,
+  "version": "0.1.0",
+  "description": "Transport-agnostic smart payment route quoting and execution SDK.",
+  "author": "SmartPay Hackathon Team",
+  "license": "MIT",
+  "homepage": "https://github.com/owizdom/smartpay-sdk#readme",
   "type": "module",
-  "main": "src/smartpapay/index.js",
+  "main": "smartpay/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owizdom/smartpay-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/owizdom/smartpay-sdk/issues"
+  },
   "exports": {
     ".": {
-      "import": "./src/smartpapay/index.js",
-      "default": "./src/smartpapay/index.js"
+      "import": "./smartpay/index.js",
+      "default": "./smartpay/index.js"
     }
   },
+  "keywords": [
+    "crypto",
+    "payments",
+    "checkout",
+    "wallet",
+    "routes",
+    "sdk",
+    "smart-payment",
+    "web3"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
-    "src/smartpapay",
+    "smartpay",
     "README.md"
   ],
   "scripts": {
-    "lint": "node --check src/smartpapay/*.js src/smartpapay/adapters/*.js src/smartpapay/internal/*.js",
-    "test": "node -e \"console.log('No test suite configured for this SDK yet.')\"",
-    "prepare": "node -e \"console.log('SDK project ready')\""
+    "lint": "node --check smartpay/*.js smartpay/adapters/*.js smartpay/internal/*.js",
+    "test": "node --test",
+    "prepublishOnly": "npm run lint && npm test"
   },
   "dependencies": {}
 }

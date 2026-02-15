@@ -52,7 +52,14 @@ function estimateEta(strategyKey, sameChain, chain) {
   return Number((base * strategyBias[strategyKey] * jitter).toFixed(2));
 }
 
-export function buildOmniRouteCandidates({ invoiceUsd, settlementToken, wallet, acceptedPaymentMethods, strategy }) {
+export function buildOmniRouteCandidates({
+  invoiceUsd,
+  settlementToken,
+  wallet,
+  acceptedPaymentMethods,
+  strategy,
+  networks = NETWORKS,
+}) {
   const selectedMethods = (acceptedPaymentMethods || []).map((item) => String(item).toUpperCase());
   const settlement = {
     ...settlementToken,
@@ -77,9 +84,14 @@ export function buildOmniRouteCandidates({ invoiceUsd, settlementToken, wallet, 
     }
 
     const sameChain = asset.chain === settlement.chain;
-    const sourceNetwork = NETWORKS[asset.chain] || NETWORKS.ethereum;
-    const settlementNetwork = NETWORKS[settlement.chain] || NETWORKS.ethereum;
-    const feeUsd = estimateNetworkFee(strategy || 'balanced', { ...token, network: sourceNetwork }, invoiceUsd, sameChain);
+    const sourceNetwork = networks?.[asset.chain] || networks?.[String(asset.chainId)] || NETWORKS.ethereum;
+    const settlementNetwork = networks?.[settlement.chain] || networks?.[String(settlement.chainId)] || NETWORKS.ethereum;
+    const feeUsd = estimateNetworkFee(
+      strategy || 'balanced',
+      { ...token, network: sourceNetwork },
+      invoiceUsd,
+      sameChain,
+    );
     const bridgePenalty = sameChain ? 0 : randomWithJitter(`${asset.symbol}-${token.chain}`, 0.25, 0.95);
     const sourceUsdRate = token.usd;
     const requiredSource = (invoiceUsd / sourceUsdRate) * (1 + bridgePenalty * 0.008);
@@ -94,8 +106,10 @@ export function buildOmniRouteCandidates({ invoiceUsd, settlementToken, wallet, 
       sourceSymbol: token.symbol,
       sourceChain: token.chain,
       sourceKey: token.key,
+      sourceChainId: token.chainId || sourceNetwork?.id || 1,
       settlementSymbol: settlement.symbol,
       settlementChain: settlement.chain,
+      settlementChainId: settlement.chainId || settlementNetwork?.id || 1,
       sourceAmount: Number((requiredSource + spread * 0.0006).toFixed(6)),
       settlementAmountUsd: Number((invoiceUsd * 0.9975).toFixed(6)),
       settlementAmount: settlement.symbol === 'USDC' || settlement.symbol === 'USDT' ? invoiceUsd : invoiceUsd / (token.usd || 1),
