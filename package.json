@@ -42,6 +42,7 @@
     "lint": "node --check smartpay/*.js smartpay/adapters/*.js smartpay/internal/*.js",
     "test": "node --test",
     "prepublishOnly": "npm run lint && npm test",
+    "demo:web": "python3 -m http.server 4173",
     "demo": "node examples/demo.mjs",
     "demo:foundry": "node examples/foundry-demo.mjs",
     "demo:foundry:fastest": "DEMO_STRATEGY=fastest node examples/foundry-demo.mjs",

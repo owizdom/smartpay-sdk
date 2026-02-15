@@ -273,6 +273,39 @@ npm run demo
 The script is located at:
 - `examples/demo.mjs`
 
+## One-page demo UI (GitHub Pages)
+
+A browser-ready demo was added as `index.html` so you can show the SDK flow on one page.
+
+It includes:
+- Strategy cards for `Fastest`, `Cheapest`, and `Balanced`
+- Live route preview and selected route summary
+- Quote-to-pay flow with visual status updates
+- Simulated execution + copyable tx hash output
+
+Run it locally:
+
+```bash
+npm run demo:web
+```
+
+Open:
+
+```
+http://localhost:4173
+```
+
+To deploy on GitHub Pages:
+
+1. Push `index.html` and `smartpay/` changes to `main`.
+2. In GitHub repo settings:
+   - Pages → Source: `Deploy from a branch`
+   - Branch: `main` / `(root)`
+3. Wait for the Pages build.
+4. Open the published URL (usually `https://<username>.github.io/<repo-name>/`).
+
+The route output shown in the UI comes directly from your SDK exports, so it is a lightweight way to validate usability and logic together.
+
 ## Foundry simulation test (optional)
 
 You can run the SDK against a local Foundry chain for execution-style validation.
