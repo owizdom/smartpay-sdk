@@ -1,4 +1,4 @@
-# SmartPay SDK: My Journey
+# SmartPay SDK: NEARCON Innovation Sandbox
 
 I started this project with a very practical goal: make crypto checkout feel as seamless as any normal checkout flow. I wanted to create something that let people pay with crypto without reading a whitepaper, hunting through settings, or wondering whether the payment route was even worth it.
 
