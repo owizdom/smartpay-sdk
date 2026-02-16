@@ -1,4 +1,4 @@
-function clamp(value, min, max) {
+export function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
 }
 
@@ -36,6 +36,25 @@ export const TOKENS = {
     decimals: 6,
     contract: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   },
+  eth_base: {
+    key: 'eth_base',
+    symbol: 'ETH',
+    name: 'Ethereum (Base)',
+    usd: 3200,
+    chainId: 8453,
+    chain: 'base',
+    decimals: 18,
+  },
+  usdc_base: {
+    key: 'usdc_base',
+    symbol: 'USDC',
+    name: 'USD Coin (Base)',
+    usd: 1,
+    chainId: 8453,
+    chain: 'base',
+    decimals: 6,
+    contract: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+  },
 };
 
 export const NETWORKS = {
@@ -49,9 +68,21 @@ export const NETWORKS = {
     explorer: 'https://etherscan.io/tx/',
     rpcChainId: 1,
   },
+  base: {
+    id: 8453,
+    label: 'Base',
+    gasBaseUsd: 0.12,
+    latencyMinutes: 0.5,
+    reliability: 0.98,
+    icon: '🔵',
+    explorer: 'https://basescan.org/tx/',
+    rpcChainId: 8453,
+  },
 };
 
 export const SUPPORTED_METHODS = ['ETH', 'USDC', 'USDT'];
+
+export const SUPPORTED_CHAINS = ['ethereum', 'base'];
 
 export const defaultDemoWalletBalances = [
   {

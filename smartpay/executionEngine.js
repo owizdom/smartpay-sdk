@@ -1,9 +1,10 @@
 import { toHexString } from './internal/encoding.js';
-
-const DEFAULT_RECIPIENT = '0x3A1d0De8D8a73a9fF5f3c6f4A6f0f5D2E8d3C45F1';
+import { normalizeAddress } from './core.js';
 const DEFAULT_CHAIN_EXPLORERS = {
   ethereum: 'https://etherscan.io/tx/',
   1: 'https://etherscan.io/tx/',
+  base: 'https://basescan.org/tx/',
+  8453: 'https://basescan.org/tx/',
 };
 const DEFAULT_RANDOM_FAILURE_RATE = 0.08;
 
@@ -45,10 +46,6 @@ function normalizeChainKey(route) {
     return '';
   }
   return String(chainId);
-}
-
-function normalizeAddress(value) {
-  return String(value || '').toLowerCase();
 }
 
 function buildExplorer({ route, transport, wallet }) {
@@ -129,7 +126,19 @@ function extractTxHash(response) {
 }
 
 async function executeWithTransport(route, { wallet, transport, to, delayMs }) {
-  const normalizedTo = normalizeAddress(to || route?.to || DEFAULT_RECIPIENT);
+  const rawTo = to || route?.to;
+  if (!rawTo) {
+    return {
+      ok: false,
+      status: 'invalid_recipient',
+      failureReason: 'Execution recipient address is required. No "to" address was provided.',
+      routeId: route.id,
+      sourceSymbol: route.sourceSymbol,
+      settlementSymbol: route.settlementSymbol,
+      strategy: route.strategy,
+    };
+  }
+  const normalizedTo = normalizeAddress(rawTo);
   if (!normalizedTo || !normalizedTo.startsWith('0x')) {
     return {
       ok: false,

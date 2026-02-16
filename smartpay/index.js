@@ -31,6 +31,8 @@ export {
   TOKENS,
   NETWORKS,
   SUPPORTED_METHODS,
+  SUPPORTED_CHAINS,
+  clamp,
   createDemoWallet,
   createWalletContext,
   normalizeNetworkMap,
@@ -49,12 +51,28 @@ export {
   ensureWithinRange,
 } from './core.js';
 
+function validateQuoteInput(checkout, wallet) {
+  if (!checkout || typeof checkout !== 'object') {
+    throw new Error('SmartPay: "checkout" is required and must be an object.');
+  }
+  if (!wallet || typeof wallet !== 'object') {
+    throw new Error('SmartPay: "wallet" is required and must be an object.');
+  }
+  if (!Array.isArray(wallet.balances) || wallet.balances.length === 0) {
+    throw new Error('SmartPay: wallet must have a non-empty "balances" array.');
+  }
+}
+
 export const smartPaySDK = {
   buildDemoWallet: createDemoWallet,
-  quoteCheckout: ({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions }) =>
-    quoteCheckoutRoutes({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions }),
-  quoteByStrategy: ({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions }) =>
-    quoteCheckoutRoutes({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions }).byStrategy?.[strategy] || [],
+  quoteCheckout: ({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions }) => {
+    validateQuoteInput(checkout, wallet);
+    return quoteCheckoutRoutes({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions });
+  },
+  quoteByStrategy: ({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions }) => {
+    validateQuoteInput(checkout, wallet);
+    return quoteCheckoutRoutes({ checkout, wallet, amountInput, strategy, networks, ...quoteOptions }).byStrategy?.[strategy] || [];
+  },
   execute: ({ route, wallet, ...executionOptions }) => executeRoute(route, { wallet, ...executionOptions }),
 };
 

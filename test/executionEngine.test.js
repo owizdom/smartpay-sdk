@@ -40,6 +40,7 @@ test('executeRoute resolves transport via transportResolver and returns tx hash'
   const result = await executeRoute(route, {
     wallet: validWallet,
     transportResolver: () => transport,
+    toAddress: '0x2222222222222222222222222222222222222222',
     forceExecution: true,
   });
 

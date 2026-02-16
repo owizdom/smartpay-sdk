@@ -50,5 +50,8 @@
     "demo:foundry:balanced": "DEMO_STRATEGY=balanced node examples/foundry-demo.mjs",
     "demo:foundry:all": "node examples/foundry-demo.mjs --all"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {}
 }

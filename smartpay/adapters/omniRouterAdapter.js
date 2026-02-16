@@ -1,15 +1,15 @@
-import { NETWORKS } from '../core.js';
+import { NETWORKS, clamp } from '../core.js';
 
 const BRIDGE_DELAY_VARIANCE = {
   ethereum: {
     sameChain: 0.4,
     bridge: 2.4,
   },
+  base: {
+    sameChain: 0.2,
+    bridge: 1.8,
+  },
 };
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
-}
 
 function randomWithJitter(seed, min, max) {
   const hash = Array.from(String(seed || 'seed')).reduce((acc, item) => acc + item.charCodeAt(0), 0);
@@ -42,7 +42,8 @@ function estimateNetworkFee(strategyKey, token, invoiceUsd, sameChain) {
 }
 
 function estimateEta(strategyKey, sameChain, chain) {
-  const base = sameChain ? BRIDGE_DELAY_VARIANCE.ethereum.sameChain : BRIDGE_DELAY_VARIANCE.ethereum.bridge;
+  const delays = BRIDGE_DELAY_VARIANCE[chain] || BRIDGE_DELAY_VARIANCE.ethereum;
+  const base = sameChain ? delays.sameChain : delays.bridge;
   const strategyBias = {
     fastest: 0.52,
     balanced: 0.82,
@@ -144,9 +145,9 @@ export function rankCandidates(routes, strategy = 'balanced') {
 
   return [...routes]
     .map((route) => {
-      const feeScore = Number(route.feesTotalUsd || 0) * (1 - w.fee);
-      const etaScore = Number(route.etaMinutes || 0) * (1 - w.eta);
-      const reliabilityScore = (1 - Number(route.reliability || 0.95)) * 100 * (1 - w.reliability);
+      const feeScore = Number(route.feesTotalUsd || 0) * w.fee;
+      const etaScore = Number(route.etaMinutes || 0) * w.eta;
+      const reliabilityScore = (1 - Number(route.reliability || 0.95)) * 100 * w.reliability;
       const score = feeScore + etaScore + reliabilityScore;
       return { ...route, score };
     })
